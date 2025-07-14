@@ -69,6 +69,11 @@ Before setting up Meesho-verse, ensure you have:
 - **Modern web browser** with camera/microphone permissions
 - **AI API Key** (optional, for enhanced chatbot features)
 
+
+<img width="5480" height="1012" alt="diagram" src="https://github.com/user-attachments/assets/d8939a95-0254-43c0-9fc5-36b388585972" />
+
+
+
 ## 🛠️ Installation & Setup
 
 ### 1. Clone the Repository
