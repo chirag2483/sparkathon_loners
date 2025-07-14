@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot Status Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #0071ce, #004f9a);
+            color: white;
+            min-height: 100vh;
+        }
+        .status-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        .status-ok { color: #4CAF50; }
+        .status-error { color: #f44336; }
+        .status-warning { color: #ff9800; }
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 AI Chatbot Status Check</h1>
+    
+    <div class="status-card">
+        <h2>System Status</h2>
+        <div class="status-item">
+            <span>Server Running:</span>
+            <span id="server-status" class="status-warning">Checking...</span>
+        </div>
+        <div class="status-item">
+            <span>AI Configuration:</span>
+            <span id="ai-config-status" class="status-warning">Checking...</span>
+        </div>
+        <div class="status-item">
+            <span>OpenRouter API Key:</span>
+            <span id="openrouter-key-status" class="status-warning">Checking...</span>
+        </div>
+        <div class="status-item">
+            <span>Google API Key:</span>
+            <span id="google-key-status" class="status-warning">Checking...</span>
+        </div>
+        <div class="status-item">
+            <span>CORS Support:</span>
+            <span id="cors-status" class="status-warning">Checking...</span>
+        </div>
+    </div>
+
+    <div class="status-card">
+        <h2>Quick Actions</h2>
+        <button onclick="testAIConnection()">Test AI Connection</button>
+        <button onclick="openChatbot()">Open Chatbot</button>
+        <button onclick="checkServer()">Check Server</button>
+        <div id="test-result" class="test-result" style="display: none;"></div>
+    </div>
+
+    <div class="status-card">
+        <h2>Instructions</h2>
+        <p><strong>If AI is not working:</strong></p>
+        <ol>
+            <li>Make sure the server is running: <code>npm start</code> in the server folder</li>
+            <li>Open the chatbot at: <a href="http://localhost:5000/chatbot.html" style="color: #4CAF50;">http://localhost:5000/chatbot.html</a></li>
+            <li>Click "Test AI Connection" button in the chatbot</li>
+            <li>Check browser console (F12) for error messages</li>
+        </ol>
+    </div>
+
+    <script src="js/ai-config.js"></script>
+    <script>
+        // Check system status
+        function checkStatus() {
+            // Check AI Configuration
+            try {
+                const service = getCurrentService();
+                const apiKey = getCurrentAPIKey();
+                const config = getCurrentConfig();
+                
+                document.getElementById('ai-config-status').textContent = '✅ Loaded';
+                document.getElementById('ai-config-status').className = 'status-ok';
+                
+                // Check OpenRouter API Key
+                const openrouterKey = API_KEYS.openrouter;
+                if (openrouterKey && openrouterKey !== 'your-openai-api-key-here') {
+                    document.getElementById('openrouter-key-status').textContent = '✅ Configured';
+                    document.getElementById('openrouter-key-status').className = 'status-ok';
+                } else {
+                    document.getElementById('openrouter-key-status').textContent = '❌ Not configured';
+                    document.getElementById('openrouter-key-status').className = 'status-error';
+                }
+                
+                // Check Google API Key
+                const googleKey = API_KEYS.google;
+                if (googleKey && googleKey !== 'your-google-api-key-here') {
+                    document.getElementById('google-key-status').textContent = '✅ Configured';
+                    document.getElementById('google-key-status').className = 'status-ok';
+                } else {
+                    document.getElementById('google-key-status').textContent = '❌ Not configured';
+                    document.getElementById('google-key-status').className = 'status-error';
+                }
+                
+                console.log('AI Service:', service);
+                console.log('API Key configured:', !!apiKey);
+                console.log('Config loaded:', !!config);
+                
+            } catch (error) {
+                document.getElementById('ai-config-status').textContent = '❌ Error loading';
+                document.getElementById('ai-config-status').className = 'status-error';
+                console.error('AI Config error:', error);
+            }
+            
+            // Check CORS
+            const isRunningFromServer = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+            if (isRunningFromServer) {
+                document.getElementById('cors-status').textContent = '✅ Supported';
+                document.getElementById('cors-status').className = 'status-ok';
+            } else {
+                document.getElementById('cors-status').textContent = '⚠️ May have issues';
+                document.getElementById('cors-status').className = 'status-warning';
+            }
+        }
+        
+        // Test AI Connection
+        async function testAIConnection() {
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Testing AI connection...';
+            
+            try {
+                const config = getCurrentConfig();
+                const apiKey = getCurrentAPIKey();
+                
+                if (!apiKey || apiKey === 'your-openai-api-key-here') {
+                    resultDiv.innerHTML = '❌ API key not configured';
+                    return;
+                }
+                
+                const response = await fetch('/api/ai-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        service: 'openrouter',
+                        requestBody: {
+                            model: config.model,
+                            messages: [
+                                { role: "system", content: "You are a helpful assistant." },
+                                { role: "user", content: "Hello, this is a test message." }
+                            ],
+                            max_tokens: 50,
+                            temperature: 0.7
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `✅ AI connection successful! Response: ${data.choices[0].message.content}`;
+                } else {
+                    const error = await response.text();
+                    resultDiv.innerHTML = `❌ AI connection failed: ${error}`;
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Test failed: ${error.message}`;
+            }
+        }
+        
+        // Check server
+        async function checkServer() {
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Checking server...';
+            
+            try {
+                const response = await fetch('/api/ai-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        service: 'test',
+                        requestBody: {}
+                    })
+                });
+                
+                if (response.status === 400) {
+                    resultDiv.innerHTML = '✅ Server is running (expected error for test service)';
+                } else {
+                    resultDiv.innerHTML = `⚠️ Server responded with status: ${response.status}`;
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Server not reachable: ${error.message}`;
+            }
+        }
+        
+        // Open chatbot
+        function openChatbot() {
+            window.open('chatbot.html', '_blank');
+        }
+        
+        // Initialize
+        checkStatus();
+    </script>
+</body>
+</html> 

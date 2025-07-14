@@ -1,0 +1,252 @@
+/* Fun Walmart blue theme for the login and signup forms */
+body {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  background-color: #262625;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-box h2 {
+  color: #00b4d8; /* Fun casual blue header color */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.user-box {
+  position: relative;
+}
+
+.user-box input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #00b4d8; /* Fun casual blue underline for input */
+  outline: none;
+  background: transparent;
+}
+
+.user-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #00b4d8; /* Fun casual blue label color */
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.user-box input:focus ~ label,
+.user-box input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #48cae4;
+  font-size: 12px;
+}
+
+a.redirect-back {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #0096c7; /* Fun casual blue button */
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.5s;
+  margin-top: 40px;
+  letter-spacing: 4px;
+  border-radius: 5px;
+  border: 2px solid #0096c7; /* Fun casual blue border */
+}
+
+a.redirect-back:hover {
+  background-color: #48cae4; /* Lighter fun casual blue hover */
+  box-shadow: 0 0 5px #00b4d8, 0 0 25px #00b4d8, 0 0 50px #00b4d8, 0 0 100px #00b4d8;
+}
+
+.create {
+  color: #48cae4; /* Light fun casual blue text for sign-up link */
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.hide {
+	display: none;
+}
+
+#user-login, #user-logout {
+	text-decoration: none;
+	color: white;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: inherit;
+	transition: color 0.3s ease;
+}
+
+#user-logout:hover, #user-login:hover {
+	color: #00b4d8;
+}
+
+/* Additional styling for form container */
+#form__container {
+  width: 90%;
+  max-width: 600px;
+  border-radius: 10px;
+  background-color: #262625;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2em;
+}
+
+.form__field__wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.form__field__wrapper input {
+  color: #fff;
+  background-color: #3f434a;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 5px;
+}
+
+.form__field__wrapper button[type="submit"] {
+  background-color: #0096c7; /* Fun casual blue button */
+  padding: 12px;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.form__field__wrapper button[type="submit"]:hover {
+  background-color: #48cae4;
+}
+
+/* Avatar selection styling */
+#avatar__selection {
+  display: flex;
+  gap: 1em;
+}
+
+.avatar__option {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 2px solid #797a79;
+}
+
+.avatar__option__selected {
+  border: 3px solid #00b4d8; /* Fun casual blue border when selected */
+}
+
+/* Room lobby container styling */
+#room__lobby-container {
+  margin: 0 4vw;
+  margin-top: 15vh;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: min-content;
+}
+
+.premium-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.room__lobby-holders {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36vh;
+  background-color: #1e1e1e;
+  border-radius: 20px;
+  border: 0.5px solid white;
+  position: relative;
+}
+
+/* Responsive form layout for smaller screens */
+@media (max-width: 600px) {
+  .login-box, #form__container {
+    width: 95%;
+  }
+}
+
+#cart-btn {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  background: white !important;
+  border: 2px solid #00b4d8 !important;
+  color: #1e1e1e !important;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin-right: 15px;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 1000 !important;
+}
+
+#cart-btn:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-1px);
+  color: #1e1e1e;
+  text-decoration: none;
+  border-color: #48cae4;
+}
+
+#cart-btn svg {
+  transition: transform 0.3s ease;
+  width: 20px;
+  height: 20px;
+}
+
+#cart-btn:hover svg {
+  transform: scale(1.1);
+  fill: #00b4d8;
+}
+
+

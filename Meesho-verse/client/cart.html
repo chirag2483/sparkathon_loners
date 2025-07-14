@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wally-verse | Products</title>
+  <link rel="stylesheet" href="css/cart.css" />
+  <script src="js/three.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/OBJLoader.js"></script>
+  <script src="js/GLTFLoader.js"></script>
+  <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+  <header id="header" class="header">
+    <nav class="nav container">
+      <div class="logo">
+        <a href="./index.html">
+          <img src="assets/Images/walmart-logo.png" alt="Walmart Logo" />
+        </a>
+      </div>
+
+      <div class="menu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="./tryon.html" class="nav-link">Virtual Tryon</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">AR Model</a>
+          </li>
+        </ul>
+
+      </div>
+
+      <a href="" class="cart">
+        <img class="shopping-cart" src="assets/Icons/shopping cart.png" alt="" />
+      </a>
+
+      <div class="hamburger">
+        <img src="assets/Icons/menu.svg" alt="" />
+
+      </div>
+    </nav>
+  </header>
+
+  <main class="main container">
+    <div class="row">
+      <div id="shoe-div" class="shoe">
+        <div id="show-figure" class="shoe-figure"></div>
+
+        <img id="shoe-img" class="shoe-img" src="assets/Images/pic1.png" alt="" />
+
+
+        <div class="dots">
+
+          <span id="dot-2" onclick="ClickedDot(2)" class="dot dot-color-2"></span>
+          <span id="dot-1" onclick="ClickedDot(1)" class="dot dot-color-1 active"></span>
+        </div>
+
+      </div>
+
+      <div class="info">
+        <div class="threeicon">
+          <img onclick="ClickedDot(2)" id="crossicon" class="crossicon not-active"
+            src="assets/Images/show-cross.png" />
+        </div>
+        <div class="shoe-info">
+          <span class="info-subtitle">Reebok</span>
+          <h1 class="info-title">Reebok Mens Floatride Energy 5</h1>
+          <p class="info-description">
+            Introducing the Reebok White Running Shoes crafted for a perfect blend of style and comfort. Made from high-quality rubber material ensuring you maximum durability, top-notch performance standards, no matter where your adventure takes you. Great for daytime events or a casual night out. Display the vital Reebok brand during your activities and feel confident in style all day long. Experience for yourself a pair of Running Shoes that offer both substance and aesthetic.
+          </p>
+        </div>
+
+        <div class="info-down">
+          <div class="size">
+            <h3 class="size-title">Total</h3>
+            <div class="size-content">
+              <span class="size-total active">8.6</span>
+              <span class="size-total">9</span>
+              <span class="size-total">9.5</span>
+            </div>
+          </div>
+
+          <div class="count">
+            <h3 class="count-title">Count</h3>
+            <div class="count-content">
+              <span>-</span>
+              <span id="item_count">1</span>
+              <span>+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="price">
+          <span class="price-title">Rs 8,295</span>
+          <a class="price-button">ADD TO CART</a>
+
+        </div>
+
+  </main>
+
+  <script src="js/gsap.min.js"></script>
+  <script src="src/tryon/cart.js"></script>
+
+</body>
+
+</html>

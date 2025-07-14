@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intro Screen</title>
+  <link rel="stylesheet" href="css/home.css" />
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/three.min.js"></script>
+  <script src="js/OrbitControls.js"></script>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="navbar__tabs">
+      <img src="assets/Images/walmart-logo.png" alt="Walmart Logo" />
+    </div>
+    <div class="navbar__tabs">
+      <ul class="navbar__list">
+        <li><a href="./tryon.html">Virtual tryon</a></li>
+        <li><a href="./cart.html">3D shop</a></li>
+        <li><a href="./shopping-cart.html" id="cart-btn">Cart</a></li>
+        <li><a href="./orders.html" id="orders-btn">Orders</a></li>
+        <li><a href="./chatbot.html" id="chatbot-btn">AI Assistant</a></li>
+        <li><a href="./room-creator.html" id="room-btn">Room</a></li>
+      </ul>
+    </div>
+    <div class="navbar__tabs">
+      <button id="login">Login</button>
+    </div>
+    <div class="navbar__tabs">
+      <button id="logout" style="display: none;">Logout</button>
+    </div>
+  </nav>
+  <div class="header centered">
+    <div class="overlay full"></div>
+    <p>Dive-in</p>
+    <p>Wally-verse</p>
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto:400,900" rel="stylesheet" type="text/css" />
+    <div class="container">
+      <div class="btn">
+        <svg width="277" height="62">
+          <defs>
+            <linearGradient id="grad1">
+              <stop offset="0%" stop-color="#FF8285" />
+              <stop offset="100%" stop-color="#E178EE" />
+            </linearGradient>
+          </defs>
+          <rect x="5" y="5" rx="25" fill="none" 0 stroke="url(#grad1)" width="266" height="50"></rect>
+        </svg>
+        <span>Enter Wally-verse</span>
+      </div>
+    </div>
+  </div>
+  <div id="container"></div>
+  <video id="myVideo" autoplay controls loop width="640" height="320" style="display: none" crossorigin="anonymous">
+    <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/61062/rin-SD.mp4" type="video/mp4" />
+  </video>
+  <script>
+    const login = document.getElementById("login");
+    const logout = document.getElementById("logout");
+    const cartBtn = document.getElementById("cart-btn");
+    const ordersBtn = document.getElementById("orders-btn");
+    const chatbotBtn = document.getElementById("chatbot-btn");
+    const roomBtn = document.getElementById("room-btn");
+    
+    // Check if user is logged in
+    const user = localStorage.getItem("user");
+    
+    if (user) {
+      // User is logged in
+      login.innerHTML = user;
+      logout.style.display = "inline-block";
+      cartBtn.style.display = "inline-block";
+      ordersBtn.style.display = "inline-block";
+      chatbotBtn.style.display = "inline-block";
+      roomBtn.style.display = "inline-block";
+      
+      // Add logout functionality
+      logout.addEventListener("click", () => {
+        localStorage.removeItem("user");
+        window.location.reload();
+      });
+    } else {
+      // User is not logged in
+      login.innerHTML = "Login";
+      logout.style.display = "none";
+      cartBtn.style.display = "none";
+      ordersBtn.style.display = "none";
+      chatbotBtn.style.display = "none";
+      roomBtn.style.display = "none";
+      
+      // Add login functionality
+      login.addEventListener("click", () => {
+        window.location.href = "./login.html";
+      });
+    }
+    
+    // FORCE CART BUTTON VISIBLE FOR TESTING
+    cartBtn.style.display = "inline-block !important";
+    cartBtn.style.visibility = "visible !important";
+    cartBtn.style.opacity = "1 !important";
+    
+    // FORCE ORDERS BUTTON VISIBLE FOR TESTING
+    ordersBtn.style.display = "inline-block !important";
+    ordersBtn.style.visibility = "visible !important";
+    ordersBtn.style.opacity = "1 !important";
+    
+    // FORCE CHATBOT BUTTON VISIBLE FOR TESTING
+    chatbotBtn.style.display = "inline-block !important";
+    chatbotBtn.style.visibility = "visible !important";
+    chatbotBtn.style.opacity = "1 !important";
+    
+    // FORCE ROOM BUTTON VISIBLE FOR TESTING
+    roomBtn.style.display = "inline-block !important";
+    roomBtn.style.visibility = "visible !important";
+    roomBtn.style.opacity = "1 !important";
+  </script>
+  <script src="./src/UI/HomeScreen.js"></script>
+</body>
+
+</html>

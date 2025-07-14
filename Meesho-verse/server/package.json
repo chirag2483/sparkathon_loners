@@ -1,0 +1,21 @@
+{
+  "name": "wally-verse-server",
+  "version": "1.0.0",
+  "description": "Real-time room server for Wally-verse",
+  "main": "room-server.js",
+  "scripts": {
+    "start": "node room-server.js",
+    "dev": "nodemon room-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["real-time", "video", "room", "socket.io"],
+  "author": "Wally-verse Team",
+  "license": "MIT"
+}

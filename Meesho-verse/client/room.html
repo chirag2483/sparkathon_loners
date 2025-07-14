@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room - Wally-verse</title>
+    <link rel="stylesheet" href="css/room.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar__tabs">
+            <img src="assets/Images/walmart-logo.png" alt="Walmart Logo" />
+        </div>
+        <div class="navbar__tabs">
+            <ul class="navbar__list">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./tryon.html">Virtual tryon</a></li>
+                <li><a href="./cart.html">3D shop</a></li>
+                <li><a href="./shopping-cart.html">Cart</a></li>
+                <li><a href="./orders.html">Orders</a></li>
+                <li><a href="./chatbot.html">AI Assistant</a></li>
+                <li><a href="./room-creator.html">Room</a></li>
+            </ul>
+        </div>
+        <div class="navbar__tabs">
+            <button id="login">Login</button>
+        </div>
+        <div class="navbar__tabs">
+            <button id="logout" style="display: none;">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Room Header -->
+    <div class="room-header">
+        <div class="room-info">
+            <h2 id="room-name">Room Name</h2>
+            <span class="room-code" id="room-code">000000</span>
+        </div>
+        <div class="room-controls">
+            <button id="exit-room-btn" class="exit-btn">
+                <span>Exit Room</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Partition - Video Grid -->
+        <div class="left-partition">
+            <!-- Video Grid -->
+            <div class="video-grid" id="video-grid">
+                <!-- My Video -->
+                <div class="video-container my-video">
+                    <video id="my-video" autoplay muted playsinline></video>
+                    <div class="video-placeholder" id="my-video-placeholder">
+                        <img src="assets/Icons/video.png" alt="Camera Off" class="placeholder-icon">
+                        <p>Your camera is off</p>
+                    </div>
+                    <div class="video-overlay">
+                        <span class="participant-name">You</span>
+                        <div class="video-controls">
+                            <button id="my-video-toggle" class="control-btn">
+                                <img src="assets/Icons/video.png" alt="Camera" id="my-video-icon">
+                            </button>
+                            <button id="my-mic-toggle" class="control-btn">
+                                <img src="assets/Icons/microphone.png" alt="Microphone" id="my-mic-icon">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other participants will be added here dynamically -->
+            </div>
+
+            <!-- Participants List -->
+            <div class="participants-section">
+                <h3>Participants (<span id="participant-count">1</span>)</h3>
+                <div class="participants-list" id="participants-list">
+                    <!-- Participants will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Partition - Product Search -->
+        <div class="right-partition">
+            <div class="search-section">
+                <h3>Product Search</h3>
+                <div class="search-container">
+                    <input type="text" id="product-search" placeholder="Search for pants, shirts, etc...">
+                    <button id="search-btn" class="search-btn">
+                        <span>Search</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div class="search-results" id="search-results">
+                <div class="no-search-message" id="no-search-message">
+                    <img src="assets/Icons/menu.svg" alt="Search Products" class="search-icon">
+                    <p>Search for products to see results</p>
+                    <p>Try searching for "pants", "shirts", "shoes", etc.</p>
+                </div>
+            </div>
+
+            <!-- Shared Products (visible to all participants) -->
+            <div class="shared-products" id="shared-products">
+                <h3>Shared Products</h3>
+                <div class="shared-products-list" id="shared-products-list">
+                    <div class="no-shared-message" id="no-shared-message">
+                        <p>No products shared yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-product-name">Product Name</h3>
+                <span class="close" id="close-product-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="product-details">
+                    <img id="modal-product-image" src="" alt="Product Image">
+                    <div class="product-info">
+                        <p id="modal-product-description">Product description</p>
+                        <div class="product-price">
+                            <span id="modal-product-price">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="add-to-cart-btn" class="primary-btn">Add to Cart</button>
+                    <button id="share-product-btn" class="secondary-btn">Share with Room</button>
+                    <button id="cancel-product" class="secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exit Room Confirmation Modal -->
+    <div id="exit-room-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Exit Room</h3>
+                <span class="close" id="close-exit-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to exit the room?</p>
+                <div class="modal-actions">
+                    <button id="confirm-exit" class="primary-btn">Exit Room</button>
+                    <button id="cancel-exit" class="secondary-btn">Stay in Room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/room.js"></script>
+</body>
+</html>

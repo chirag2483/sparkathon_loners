@@ -1,0 +1,8 @@
+{
+  "parts": [
+    "src/character/models/henry/henry_part_aa",
+    "src/character/models/henry/henry_part_ab"
+  ],
+  "originalFile": "henry.fbx",
+  "totalSize": 53981136
+} 

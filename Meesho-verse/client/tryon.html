@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TryOn</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/tryon.css" />
+		<script src="js/jQuery.min.js"></script>
+		<script src="js/threeUtils.js"></script>
+		<script src="src/tryon/utils.js"></script>
+		<script src="js/clmtrackr.js"></script>
+	</head>
+	<body>
+		<div id="tryon">
+			<button id="back-btn" class="back-button">← Back to Lobby</button>
+			<button id="cart-btn" class="cart-button">
+				🛒 Cart (<span id="cart-count">0</span>)
+			</button>
+			<div id="accessory-controls">
+				<button id="glasses-btn" class="accessory-btn active">Glasses</button>
+				<button id="hat-btn" class="accessory-btn">Hat</button>
+			</div>
+			<video id="camera" loop></video>
+			<canvas id="overlay"></canvas>
+			<button id="start">Start</button>
+			<div id="debug"></div>
+		</div>
+
+		<div class="bottom">
+			<div class="carousel-container">
+				<button class="carousel-btn prev-btn" onclick="moveCarousel(-1)">❮</button>
+				<div class="carousel-wrapper">
+					<div class="carousel-track" id="carousel-track">
+						<!-- Product 1: Glasses -->
+						<div class="cards" data-product-id="1">
+							<img
+								src="https://cdn.eyemyeye.com/shared/images/products/S12A2001/S12A2001-1.jpg"
+								alt=""
+							/>
+							<p>Vincent Chase Polarized Gunmetal Green Full Rim Aviator</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="1" data-product-name="Vincent Chase Polarized Gunmetal Green Full Rim Aviator" data-product-price="1299">Add to Cart</button>
+						</div>
+						
+						<!-- Product 2: Shirt -->
+						<div class="cards" data-product-id="2">
+							<img
+								src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/30244568/2024/7/19/3dad10ad-79fb-4d76-a6dc-7742a687ba431721360472201HMMenPrintedResortShirts1.jpg"
+								alt=""
+							/>
+							<p>
+								Shirt in a printed cotton weave with a resort collar, French front and
+								a yoke at the back. Short sleeves and a straight-cut hem. Regular fit
+								for comfortable wear and a classic silhouette.
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="2" data-product-name="Printed Cotton Resort Shirt" data-product-price="899">Add to Cart</button>
+						</div>
+						
+						<!-- Product 3: Cap -->
+						<div class="cards" data-product-id="3">
+							<img
+								src="https://rukminim2.flixcart.com/image/850/1000/xif0q/cap/t/7/b/free-latest-ny-baseball-cap-highever-original-imagnm8yxxvmhmdy.jpeg?q=90&crop=false"
+								alt=""
+							/>
+							<p>
+								Latest cotton adjustable baseball caps, ny caps for men, gym caps,
+								summer cap Embroidered Sports/Regular Cap
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="3" data-product-name="NY Baseball Cap" data-product-price="299">Add to Cart</button>
+						</div>
+						
+						<!-- Product 4: Blue Shirt -->
+						<div class="cards" data-product-id="4">
+							<img
+								src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2024/JULY/29/U2KRlrCA_f2a36048ad92464ba042c46e380dca67.jpg"
+								alt=""
+							/>
+							<p>
+								Blue striped regular-fit casual shirt ,has a mandarin collar, button
+								closure, long sleeves, curved hem
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="4" data-product-name="Blue Striped Casual Shirt" data-product-price="799">Add to Cart</button>
+						</div>
+						
+						<!-- Product 5: Pants 1 -->
+						<div class="cards" data-product-id="5">
+							<img
+								src="pants/Screenshot 2025-07-14 041652.png"
+								alt=""
+							/>
+							<p>
+								Classic Denim Jeans - Comfortable fit with modern styling, perfect for casual wear
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="5" data-product-name="Classic Denim Jeans" data-product-price="599">Add to Cart</button>
+						</div>
+						
+						<!-- Product 6: Pants 2 -->
+						<div class="cards" data-product-id="6">
+							<img
+								src="pants/Screenshot 2025-07-14 041742.png"
+								alt=""
+							/>
+							<p>
+								Khaki Chino Pants - Versatile and stylish, ideal for both casual and semi-formal occasions
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="6" data-product-name="Khaki Chino Pants" data-product-price="449">Add to Cart</button>
+						</div>
+						
+						<!-- Product 7: Pants 3 -->
+						<div class="cards" data-product-id="7">
+							<img
+								src="pants/Screenshot 2025-07-14 041754.png"
+								alt=""
+							/>
+							<p>
+								Black Formal Pants - Professional look with comfortable stretch fabric
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="7" data-product-name="Black Formal Pants" data-product-price="699">Add to Cart</button>
+						</div>
+						
+						<!-- Product 8: Pants 4 -->
+						<div class="cards" data-product-id="8">
+							<img
+								src="pants/Screenshot 2025-07-14 041807.png"
+								alt=""
+							/>
+							<p>
+								Gray Cargo Pants - Functional design with multiple pockets, perfect for outdoor activities
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="8" data-product-name="Gray Cargo Pants" data-product-price="549">Add to Cart</button>
+						</div>
+						
+						<!-- Product 9: Shirt 1 -->
+						<div class="cards" data-product-id="9">
+							<img
+								src="shirts/Screenshot 2025-07-14 041904.png"
+								alt=""
+							/>
+							<p>
+								White Casual Shirt - Clean and crisp design, perfect for everyday wear
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="9" data-product-name="White Casual Shirt" data-product-price="399">Add to Cart</button>
+						</div>
+						
+						<!-- Product 10: Shirt 2 -->
+						<div class="cards" data-product-id="10">
+							<img
+								src="shirts/Screenshot 2025-07-14 041916.png"
+								alt=""
+							/>
+							<p>
+								Blue Denim Shirt - Classic denim style with modern fit, versatile for any occasion
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="10" data-product-name="Blue Denim Shirt" data-product-price="649">Add to Cart</button>
+						</div>
+						
+						<!-- Product 11: Shirt 3 -->
+						<div class="cards" data-product-id="11">
+							<img
+								src="shirts/Screenshot 2025-07-14 041931.png"
+								alt=""
+							/>
+							<p>
+								Plaid Flannel Shirt - Warm and comfortable, perfect for cooler weather
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="11" data-product-name="Plaid Flannel Shirt" data-product-price="549">Add to Cart</button>
+						</div>
+						
+						<!-- Product 12: Shirt 4 -->
+						<div class="cards" data-product-id="12">
+							<img
+								src="shirts/Screenshot 2025-07-14 041941.png"
+								alt=""
+							/>
+							<p>
+								Black Formal Shirt - Elegant design suitable for professional settings
+							</p>
+							<div class="tryon">Try now</div>
+							<button class="add-to-cart-btn" data-product-id="12" data-product-name="Black Formal Shirt" data-product-price="749">Add to Cart</button>
+						</div>
+					</div>
+				</div>
+				<button class="carousel-btn next-btn" onclick="moveCarousel(1)">❯</button>
+			</div>
+			
+			<!-- Carousel Indicators -->
+			<div class="carousel-indicators" id="carousel-indicators">
+				<!-- Indicators will be generated by JavaScript -->
+			</div>
+		</div>
+
+		<script>
+			// Cart functionality
+			let cart = JSON.parse(localStorage.getItem('cart')) || [];
+			
+			// Carousel functionality
+			let currentSlide = 0;
+			const totalSlides = 12; // Total number of products
+			const slidesPerView = 4; // Number of slides visible at once
+			
+			// Update cart count display
+			function updateCartCount() {
+				const cartCount = document.getElementById('cart-count');
+				const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+				cartCount.textContent = totalItems;
+			}
+			
+			// Add to cart functionality
+			function addToCart(productId, productName, productPrice) {
+				const existingItem = cart.find(item => item.id === productId);
+				
+				if (existingItem) {
+					existingItem.quantity += 1;
+				} else {
+					cart.push({
+						id: productId,
+						name: productName,
+						price: productPrice,
+						quantity: 1
+					});
+				}
+				
+				localStorage.setItem('cart', JSON.stringify(cart));
+				updateCartCount();
+				
+				// Show success message
+				showNotification(`${productName} added to cart!`);
+			}
+			
+			// Show notification
+			function showNotification(message) {
+				const notification = document.createElement('div');
+				notification.className = 'notification';
+				notification.textContent = message;
+				document.body.appendChild(notification);
+				
+				setTimeout(() => {
+					notification.remove();
+				}, 2000);
+			}
+			
+			// Carousel functions
+			function moveCarousel(direction) {
+				const track = document.getElementById('carousel-track');
+				const cardWidth = 320; // Width of each card (280px) + gap (20px) + padding
+				const maxSlides = totalSlides - slidesPerView;
+				
+				currentSlide += direction;
+				
+				// Handle circular navigation
+				if (currentSlide < 0) {
+					currentSlide = maxSlides;
+				} else if (currentSlide > maxSlides) {
+					currentSlide = 0;
+				}
+				
+				const translateX = -currentSlide * cardWidth;
+				track.style.transform = `translateX(${translateX}px)`;
+				
+				updateIndicators();
+			}
+			
+			function updateIndicators() {
+				const indicators = document.querySelectorAll('.indicator');
+				const maxSlides = totalSlides - slidesPerView;
+				
+				indicators.forEach((indicator, index) => {
+					if (index === currentSlide) {
+						indicator.classList.add('active');
+					} else {
+						indicator.classList.remove('active');
+					}
+				});
+			}
+			
+			function createIndicators() {
+				const indicatorsContainer = document.getElementById('carousel-indicators');
+				const maxSlides = totalSlides - slidesPerView;
+				
+				for (let i = 0; i <= maxSlides; i++) {
+					const indicator = document.createElement('div');
+					indicator.className = 'indicator';
+					indicator.onclick = () => {
+						currentSlide = i;
+						const track = document.getElementById('carousel-track');
+						const cardWidth = 320;
+						const translateX = -currentSlide * cardWidth;
+						track.style.transform = `translateX(${translateX}px)`;
+						updateIndicators();
+					};
+					indicatorsContainer.appendChild(indicator);
+				}
+				
+				updateIndicators();
+			}
+			
+
+			
+			// Initialize cart count and carousel
+			updateCartCount();
+			
+			// Add event listeners for Add to Cart buttons
+			document.addEventListener('DOMContentLoaded', function() {
+				const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+				
+				addToCartButtons.forEach(button => {
+					button.addEventListener('click', function() {
+						const productId = this.getAttribute('data-product-id');
+						const productName = this.getAttribute('data-product-name');
+						const productPrice = parseInt(this.getAttribute('data-product-price'));
+						
+						addToCart(productId, productName, productPrice);
+					});
+				});
+				
+				// Cart button functionality
+				document.getElementById('cart-btn').addEventListener('click', function() {
+					window.location.href = './shopping-cart.html';
+				});
+				
+				// Initialize carousel indicators
+				createIndicators();
+			});
+			
+			// Back button functionality
+			document.getElementById('back-btn').addEventListener('click', function() {
+				window.location.href = './index.html';
+			});
+		</script>
+		<script src="src/tryon/tryon-enhanced.js"></script>
+	</body>
+</html>

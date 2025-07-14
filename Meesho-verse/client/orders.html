@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wally-verse | My Orders</title>
+  <link rel="stylesheet" href="css/orders.css" />
+</head>
+<body>
+  <header id="header" class="header">
+    <nav class="nav container">
+      <div class="logo">
+        <a href="./index.html">
+          <img src="assets/Images/walmart-logo.png" alt="Walmart Logo" />
+        </a>
+      </div>
+
+      <div class="menu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="./tryon.html" class="nav-link">Virtual Tryon</a>
+          </li>
+          <li class="nav-item">
+            <a href="./shop.html" class="nav-link">3D Shop</a>
+          </li>
+        </ul>
+      </div>
+
+      <button id="back-btn" class="back-button">← Back to Home</button>
+    </nav>
+  </header>
+
+  <main class="main container">
+    <div class="orders-container">
+      <h1 class="orders-title">📦 My Orders</h1>
+      
+      <div class="orders-content">
+        <div class="orders-list" id="orders-list">
+          <!-- Orders will be dynamically loaded here -->
+        </div>
+        
+        <div id="empty-orders" class="empty-orders" style="display: none;">
+          <div class="empty-orders-content">
+            <h2>No orders yet</h2>
+            <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
+            <button onclick="window.location.href='./tryon.html'" class="shop-now-btn">
+              Start Shopping
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Order Details Modal -->
+  <div id="order-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Order Details</h2>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Order details will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Cancel Confirmation Modal -->
+  <div id="cancel-modal" class="modal" style="display: none;">
+    <div class="modal-content cancel-modal-content">
+      <div class="modal-header">
+        <h2>Cancel Order</h2>
+        <button class="close-btn" onclick="closeCancelModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="cancel-confirmation">
+          <div class="warning-icon">⚠️</div>
+          <h3>Are you sure you want to cancel this order?</h3>
+          <p>This action cannot be undone. Once cancelled, a refund will be initiated within 2 business days.</p>
+          <div class="cancel-actions">
+            <button class="cancel-confirm-btn" onclick="confirmCancelOrder()">Yes, Cancel Order</button>
+            <button class="cancel-cancel-btn" onclick="closeCancelModal()">No, Keep Order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Refund Notification -->
+  <div id="refund-notification" class="refund-notification" style="display: none;">
+    <div class="refund-content">
+      <div class="refund-icon">💰</div>
+      <div class="refund-text">
+        <h4>Order Cancelled Successfully!</h4>
+        <p>Refund will be initiated within 2 business days.</p>
+      </div>
+      <button class="refund-close-btn" onclick="closeRefundNotification()">×</button>
+    </div>
+  </div>
+
+  <script>
+    // Get product image based on product ID
+    function getProductImage(productId) {
+      const productImages = {
+        '1': 'https://cdn.eyemyeye.com/shared/images/products/S12A2001/S12A2001-1.jpg',
+        '2': 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/30244568/2024/7/19/3dad10ad-79fb-4d76-a6dc-7742a687ba431721360472201HMMenPrintedResortShirts1.jpg',
+        '3': 'https://rukminim2.flixcart.com/image/850/1000/xif0q/cap/t/7/b/free-latest-ny-baseball-cap-highever-original-imagnm8yxxvmhmdy.jpeg?q=90&crop=false',
+        '4': 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2024/JULY/29/U2KRlrCA_f2a36048ad92464ba042c46e380dca67.jpg',
+        '5': 'pants/Screenshot 2025-07-14 041652.png',
+        '6': 'pants/Screenshot 2025-07-14 041742.png',
+        '7': 'pants/Screenshot 2025-07-14 041754.png',
+        '8': 'pants/Screenshot 2025-07-14 041807.png',
+        '9': 'shirts/Screenshot 2025-07-14 041904.png',
+        '10': 'shirts/Screenshot 2025-07-14 041916.png',
+        '11': 'shirts/Screenshot 2025-07-14 041931.png',
+        '12': 'shirts/Screenshot 2025-07-14 041941.png'
+      };
+      
+      return productImages[productId] || 'https://via.placeholder.com/80x80/00b4d8/ffffff?text=Product';
+    }
+
+    // Format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Get status color
+    function getStatusColor(status) {
+      switch(status) {
+        case 'Delivered':
+          return '#28a745';
+        case 'Shipped':
+          return '#17a2b8';
+        case 'Processing':
+          return '#ffc107';
+        case 'Cancelled':
+          return '#dc3545';
+        default:
+          return '#6c757d';
+      }
+    }
+
+    // Load orders
+    function loadOrders() {
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      const ordersList = document.getElementById('orders-list');
+      const emptyOrders = document.getElementById('empty-orders');
+
+      if (orders.length === 0) {
+        ordersList.innerHTML = '';
+        emptyOrders.style.display = 'flex';
+        return;
+      }
+
+      emptyOrders.style.display = 'none';
+      
+      ordersList.innerHTML = orders.map(order => `
+        <div class="order-card" onclick="showOrderDetails('${order.id}')">
+          <div class="order-header">
+            <div class="order-info">
+              <h3 class="order-id">Order #${order.id.slice(-8)}</h3>
+              <p class="order-date">${formatDate(order.date)}</p>
+            </div>
+            <div class="order-status" style="color: ${getStatusColor(order.status)}">
+              <span class="status-icon">📦</span>
+              ${order.status}
+            </div>
+          </div>
+          
+          <div class="order-items">
+            ${order.items.map(item => `
+              <div class="order-item">
+                <img src="${getProductImage(item.id)}" alt="${item.name}" class="item-image">
+                <div class="item-details">
+                  <h4 class="item-name">${item.name}</h4>
+                  <p class="item-quantity">Qty: ${item.quantity}</p>
+                </div>
+                <div class="item-price">₹${item.price * item.quantity}</div>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="order-footer">
+            <div class="order-total">
+              <span>Total:</span>
+              <span class="total-amount">₹${order.total.toFixed(2)}</span>
+            </div>
+            <div class="order-actions">
+              <button class="view-details-btn">View Details</button>
+              ${order.status !== 'Cancelled' ? `<button class="cancel-order-btn" onclick="event.stopPropagation(); cancelOrder('${order.id}')">Cancel Order</button>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Show order details modal
+    function showOrderDetails(orderId) {
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      const order = orders.find(o => o.id === orderId);
+      
+      if (!order) return;
+
+      const modalBody = document.getElementById('modal-body');
+      modalBody.innerHTML = `
+        <div class="order-details">
+          <div class="detail-section">
+            <h3>Order Information</h3>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="label">Order ID:</span>
+                <span class="value">#${order.id.slice(-8)}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Order Date:</span>
+                <span class="value">${formatDate(order.date)}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Status:</span>
+                <span class="value" style="color: ${getStatusColor(order.status)}">${order.status}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Payment Method:</span>
+                <span class="value">${order.paymentMethod === 'card' ? 'Credit/Debit Card' : 'QR Code Payment'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>Shipping Address</h3>
+            <div class="address-details">
+              <p><strong>${order.shippingAddress.firstName} ${order.shippingAddress.lastName}</strong></p>
+              <p>${order.shippingAddress.address}</p>
+              <p>${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.zipCode}</p>
+              <p>${order.shippingAddress.country}</p>
+              <p>📧 ${order.shippingAddress.email}</p>
+              <p>📞 ${order.shippingAddress.phone}</p>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>Order Items</h3>
+            <div class="items-list">
+              ${order.items.map(item => `
+                <div class="detail-item-row">
+                  <img src="${getProductImage(item.id)}" alt="${item.name}" class="item-image">
+                  <div class="item-info">
+                    <h4>${item.name}</h4>
+                    <p>Quantity: ${item.quantity}</p>
+                  </div>
+                  <div class="item-price">₹${item.price * item.quantity}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>Order Summary</h3>
+            <div class="summary-details">
+              <div class="summary-item">
+                <span>Subtotal:</span>
+                <span>₹${order.subtotal.toFixed(2)}</span>
+              </div>
+              <div class="summary-item">
+                <span>Tax (18%):</span>
+                <span>₹${order.tax.toFixed(2)}</span>
+              </div>
+              <div class="summary-item">
+                <span>Shipping:</span>
+                <span>₹${order.shipping}</span>
+              </div>
+              <div class="summary-item total">
+                <span>Total:</span>
+                <span>₹${order.total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('order-modal').style.display = 'flex';
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('order-modal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('order-modal');
+      const cancelModal = document.getElementById('cancel-modal');
+      if (event.target === modal) {
+        closeModal();
+      }
+      if (event.target === cancelModal) {
+        closeCancelModal();
+      }
+    }
+
+    // Cancel order functionality
+    let orderToCancel = null;
+
+    function cancelOrder(orderId) {
+      orderToCancel = orderId;
+      document.getElementById('cancel-modal').style.display = 'flex';
+    }
+
+    function closeCancelModal() {
+      document.getElementById('cancel-modal').style.display = 'none';
+      orderToCancel = null;
+    }
+
+    function confirmCancelOrder() {
+      if (!orderToCancel) return;
+
+      // Get orders from localStorage
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      
+      // Find and update the order status
+      const orderIndex = orders.findIndex(o => o.id === orderToCancel);
+      if (orderIndex !== -1) {
+        orders[orderIndex].status = 'Cancelled';
+        localStorage.setItem('orders', JSON.stringify(orders));
+        
+        // Reload orders display
+        loadOrders();
+        
+        // Close cancel modal
+        closeCancelModal();
+        
+        // Show refund notification
+        showRefundNotification();
+      }
+    }
+
+    function showRefundNotification() {
+      const notification = document.getElementById('refund-notification');
+      notification.style.display = 'flex';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        closeRefundNotification();
+      }, 5000);
+    }
+
+    function closeRefundNotification() {
+      document.getElementById('refund-notification').style.display = 'none';
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      loadOrders();
+
+      // Back button
+      document.getElementById('back-btn').addEventListener('click', function() {
+        window.location.href = './index.html';
+      });
+    });
+  </script>
+</body>
+</html> 

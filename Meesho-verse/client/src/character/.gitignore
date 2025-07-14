@@ -1,0 +1,9 @@
+# Ignore reconstructed large FBX files
+*.fbx
+
+# Keep the split files and configuration
+!models/
+!animations/
+!*.js
+!*.json
+!*.md 

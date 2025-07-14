@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Creator - Wally-verse</title>
+    <link rel="stylesheet" href="css/room-creator.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar__tabs">
+            <img src="assets/Images/walmart-logo.png" alt="Walmart Logo" />
+        </div>
+        <div class="navbar__tabs">
+            <ul class="navbar__list">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./tryon.html">Virtual tryon</a></li>
+                <li><a href="./cart.html">3D shop</a></li>
+                <li><a href="./shopping-cart.html">Cart</a></li>
+                <li><a href="./orders.html">Orders</a></li>
+                <li><a href="./chatbot.html">AI Assistant</a></li>
+                <li><a href="./room-creator.html" class="active">Room</a></li>
+            </ul>
+        </div>
+        <div class="navbar__tabs">
+            <button id="login">Login</button>
+        </div>
+        <div class="navbar__tabs">
+            <button id="logout" style="display: none;">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Partition -->
+        <div class="left-partition">
+            <!-- Top Section - Webcam View -->
+            <div class="webcam-section">
+                <div class="webcam-header">
+                    <h3>Webcam View</h3>
+                    <div class="webcam-controls">
+                        <button id="webcam-toggle" class="control-btn">
+                            <img src="assets/Icons/video.png" alt="Camera" id="webcam-icon">
+                            <span id="webcam-text">Turn On</span>
+                        </button>
+                        <button id="mic-toggle" class="control-btn">
+                            <img src="assets/Icons/microphone.png" alt="Microphone" id="mic-icon">
+                            <span id="mic-text">Turn On</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="webcam-container">
+                    <video id="webcam-video" autoplay muted playsinline></video>
+                    <div class="webcam-placeholder" id="webcam-placeholder">
+                        <img src="assets/Icons/video.png" alt="Camera Off" class="placeholder-icon">
+                        <p>Camera is turned off</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section - Room Controls -->
+            <div class="room-controls-section">
+                <h3>Room Management</h3>
+                <div class="room-controls">
+                    <button id="create-room-btn" class="primary-btn">
+                        <span>Create New Room</span>
+                    </button>
+                    <button id="join-room-btn" class="secondary-btn">
+                        <span>Join Room</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Partition - Room List -->
+        <div class="right-partition">
+            <div class="room-list-header">
+                <h3>My Rooms</h3>
+                <div class="room-search">
+                    <input type="text" id="room-search" placeholder="Search rooms...">
+                </div>
+            </div>
+            <div class="room-list" id="room-list">
+                <!-- Rooms will be dynamically added here -->
+                <div class="no-rooms-message" id="no-rooms-message">
+                    <img src="assets/Icons/menu.svg" alt="No Rooms" class="no-rooms-icon">
+                    <p>No rooms created yet</p>
+                    <p>Create your first room to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Room Modal -->
+    <div id="join-room-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Join Room</h3>
+                <span class="close" id="close-join-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="room-code-input">Enter 6-digit Room Code:</label>
+                    <input type="text" id="room-code-input" maxlength="6" placeholder="000000">
+                </div>
+                <div class="modal-buttons">
+                    <button id="join-room-confirm" class="primary-btn">Join Room</button>
+                    <button id="cancel-join" class="secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Room Modal -->
+    <div id="create-room-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Room</h3>
+                <span class="close" id="close-create-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="room-name-input">Room Name:</label>
+                    <input type="text" id="room-name-input" placeholder="Enter room name">
+                </div>
+                <div class="input-group">
+                    <label for="room-description-input">Description (optional):</label>
+                    <textarea id="room-description-input" placeholder="Enter room description"></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button id="create-room-confirm" class="primary-btn">Create Room</button>
+                    <button id="cancel-create" class="secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/room-creator.js"></script>
+</body>
+</html> 

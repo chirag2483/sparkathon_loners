@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wally-verse | Shopping Cart</title>
+  <link rel="stylesheet" href="css/shopping-cart.css" />
+</head>
+<body>
+  <header id="header" class="header">
+    <nav class="nav container">
+      <div class="logo">
+        <a href="./index.html">
+          <img src="assets/Images/walmart-logo.png" alt="Walmart Logo" />
+        </a>
+      </div>
+
+      <div class="menu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="./tryon.html" class="nav-link">Virtual Tryon</a>
+          </li>
+          <li class="nav-item">
+            <a href="./shop.html" class="nav-link">3D Shop</a>
+          </li>
+        </ul>
+      </div>
+
+      <button id="back-btn" class="back-button">← Back to Lobby</button>
+    </nav>
+  </header>
+
+  <main class="main container">
+    <div class="cart-container">
+      <h1 class="cart-title">🛒 Shopping Cart</h1>
+      
+      <div class="cart-content">
+        <div class="cart-items" id="cart-items">
+          <!-- Cart items will be dynamically loaded here -->
+        </div>
+        
+        <div class="cart-summary">
+          <h2>Order Summary</h2>
+          <div class="summary-item">
+            <span>Subtotal:</span>
+            <span id="subtotal">₹0</span>
+          </div>
+          <div class="summary-item">
+            <span>Tax (18%):</span>
+            <span id="tax">₹0</span>
+          </div>
+          <div class="summary-item">
+            <span>Shipping:</span>
+            <span id="shipping">₹0</span>
+          </div>
+          <div class="summary-item total">
+            <span>Total:</span>
+            <span id="total">₹0</span>
+          </div>
+          
+          <button id="checkout-btn" class="checkout-btn" disabled>
+            Proceed to Checkout
+          </button>
+          
+          <button id="continue-shopping" class="continue-shopping-btn">
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+      
+      <div id="empty-cart" class="empty-cart" style="display: none;">
+        <div class="empty-cart-content">
+          <h2>Your cart is empty</h2>
+          <p>Looks like you haven't added any items to your cart yet.</p>
+          <button onclick="window.location.href='./tryon.html'" class="shop-now-btn">
+            Start Shopping
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Cart functionality
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Get product image based on product ID
+    function getProductImage(productId) {
+      const productImages = {
+        '1': 'https://cdn.eyemyeye.com/shared/images/products/S12A2001/S12A2001-1.jpg',
+        '2': 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/30244568/2024/7/19/3dad10ad-79fb-4d76-a6dc-7742a687ba431721360472201HMMenPrintedResortShirts1.jpg',
+        '3': 'https://rukminim2.flixcart.com/image/850/1000/xif0q/cap/t/7/b/free-latest-ny-baseball-cap-highever-original-imagnm8yxxvmhmdy.jpeg?q=90&crop=false',
+        '4': 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2024/JULY/29/U2KRlrCA_f2a36048ad92464ba042c46e380dca67.jpg',
+        '5': 'pants/Screenshot 2025-07-14 041652.png',
+        '6': 'pants/Screenshot 2025-07-14 041742.png',
+        '7': 'pants/Screenshot 2025-07-14 041754.png',
+        '8': 'pants/Screenshot 2025-07-14 041807.png',
+        '9': 'shirts/Screenshot 2025-07-14 041904.png',
+        '10': 'shirts/Screenshot 2025-07-14 041916.png',
+        '11': 'shirts/Screenshot 2025-07-14 041931.png',
+        '12': 'shirts/Screenshot 2025-07-14 041941.png'
+      };
+      
+      return productImages[productId] || 'https://via.placeholder.com/80x80/00b4d8/ffffff?text=Product';
+    }
+    
+    // Update cart display
+    function updateCartDisplay() {
+      const cartItemsContainer = document.getElementById('cart-items');
+      const emptyCart = document.getElementById('empty-cart');
+      const checkoutBtn = document.getElementById('checkout-btn');
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '';
+        emptyCart.style.display = 'flex';
+        checkoutBtn.disabled = true;
+        return;
+      }
+      
+      emptyCart.style.display = 'none';
+      checkoutBtn.disabled = false;
+      
+      cartItemsContainer.innerHTML = cart.map((item, index) => `
+        <div class="cart-item" data-index="${index}">
+          <div class="item-image">
+            <img src="${getProductImage(item.id)}" alt="${item.name}" />
+          </div>
+          <div class="item-details">
+            <h3 class="item-name">${item.name}</h3>
+            <p class="item-price">₹${item.price}</p>
+          </div>
+          <div class="item-quantity">
+            <button class="quantity-btn minus" onclick="updateQuantity(${index}, -1)">-</button>
+            <span class="quantity">${item.quantity}</span>
+            <button class="quantity-btn plus" onclick="updateQuantity(${index}, 1)">+</button>
+          </div>
+          <div class="item-total">
+            <span>₹${item.price * item.quantity}</span>
+          </div>
+          <button class="remove-btn" onclick="removeItem(${index})">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      `).join('');
+      
+      updateSummary();
+    }
+    
+    // Update quantity
+    function updateQuantity(index, change) {
+      const newQuantity = cart[index].quantity + change;
+      
+      if (newQuantity <= 0) {
+        removeItem(index);
+        return;
+      }
+      
+      cart[index].quantity = newQuantity;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+    }
+    
+    // Remove item
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+      showNotification('Item removed from cart');
+    }
+    
+    // Update summary
+    function updateSummary() {
+      const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+      const tax = subtotal * 0.18;
+      const shipping = subtotal > 0 ? 100 : 0;
+      const total = subtotal + tax + shipping;
+      
+      document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+      document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
+      document.getElementById('shipping').textContent = `₹${shipping.toFixed(2)}`;
+      document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
+    }
+    
+    // Show notification
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 2000);
+    }
+    
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartDisplay();
+      
+      // Back button
+      document.getElementById('back-btn').addEventListener('click', function() {
+        window.location.href = './index.html';
+      });
+      
+      // Continue shopping
+      document.getElementById('continue-shopping').addEventListener('click', function() {
+        window.location.href = './tryon.html';
+      });
+      
+      // Checkout button
+      document.getElementById('checkout-btn').addEventListener('click', function() {
+        if (cart.length > 0) {
+          // Redirect to checkout page
+          window.location.href = './checkout.html';
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

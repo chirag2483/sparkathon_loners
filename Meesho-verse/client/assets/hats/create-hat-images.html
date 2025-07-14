@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hat Image Generator</title>
+</head>
+<body>
+    <h2>Hat Image Generator for Virtual Tryon</h2>
+    <p>This tool generates basic hat images for testing the virtual tryon feature.</p>
+    
+    <canvas id="hatCanvas" width="200" height="150"></canvas>
+    <br>
+    <button onclick="generateHat()">Generate Hat</button>
+    <button onclick="downloadHat()">Download Hat</button>
+    
+    <script>
+        function generateHat() {
+            const canvas = document.getElementById('hatCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, 200, 150);
+            
+            // Draw hat base
+            ctx.fillStyle = '#8B4513'; // Brown color
+            ctx.beginPath();
+            ctx.ellipse(100, 80, 60, 20, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Draw hat top
+            ctx.fillStyle = '#654321'; // Darker brown
+            ctx.beginPath();
+            ctx.ellipse(100, 60, 40, 15, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Draw hat brim
+            ctx.fillStyle = '#A0522D'; // Saddle brown
+            ctx.beginPath();
+            ctx.ellipse(100, 95, 70, 8, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Add some texture
+            ctx.strokeStyle = '#654321';
+            ctx.lineWidth = 1;
+            for(let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.moveTo(60 + i * 10, 60);
+                ctx.lineTo(60 + i * 10, 75);
+                ctx.stroke();
+            }
+        }
+        
+        function downloadHat() {
+            const canvas = document.getElementById('hatCanvas');
+            const link = document.createElement('a');
+            link.download = 'hat1.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Generate initial hat
+        generateHat();
+    </script>
+</body>
+</html> 
